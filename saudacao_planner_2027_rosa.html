@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Saudação — Planner 2027</title>
+<style>
+:root{--creme:#fcf9f4;--rosa:#b52a54;--rosa-claro:#d77b94;--texto:#513d42;--suave:#977c83;--campo:#f7e9ed}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;background:var(--creme)}
+body{font-family:Georgia,'Times New Roman',serif;color:var(--texto)}
+.widget{min-height:315px;padding:32px 15px 27px;display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:center}
+.saudacao{color:var(--rosa);font-size:clamp(19px,4.5vw,24px);font-weight:normal;font-style:italic;margin:0 0 15px}
+.hora{font-size:clamp(41px,11vw,59px);line-height:1.06;margin:0 0 7px;font-weight:normal;letter-spacing:-1px;font-variant-numeric:tabular-nums}
+.data{font-family:Arial,Helvetica,sans-serif;color:var(--suave);font-size:10px;text-transform:uppercase;letter-spacing:3px;margin:0}
+.linha{width:38px;height:1.5px;background:var(--rosa-claro);margin:16px 0 15px}
+.frase{font-size:clamp(14px,3.5vw,17px);color:var(--rosa);font-style:italic;margin:0 0 20px;line-height:1.45}
+.foco{width:100%;max-width:540px;min-height:37px;display:flex;align-items:center;gap:10px;background:var(--campo);border-radius:7px;padding:8px 12px;text-align:left}
+.foco label{font:10px Arial,Helvetica,sans-serif;letter-spacing:1.7px;color:var(--rosa);white-space:nowrap}
+.foco input{flex:1;min-width:0;background:transparent;border:0;outline:0;font:13px Arial,Helvetica,sans-serif;color:var(--texto)}
+.foco input::placeholder{color:#977c83;opacity:1}
+@media(max-width:420px){.widget{padding:24px 13px;min-height:290px}.foco{gap:7px}.data{letter-spacing:2px}}
+</style>
+</head>
+<body>
+<main class="widget">
+<h1 class="saudacao" id="saudacao">Boa tarde, Madu!</h1>
+<div class="hora" id="hora">15:29</div>
+<p class="data" id="data">DOMINGO, 22 DE NOVEMBRO</p>
+<div class="linha" aria-hidden="true"></div>
+<p class="frase">“Seja grata. É na gratidão que a vida floresce.”</p>
+<div class="foco"><label for="foco">HOJE</label><input id="foco" type="text" placeholder="Uma coisa que faria seu dia melhor..." maxlength="180" autocomplete="off"></div>
+</main>
+<script>
+(function(){
+const zone='America/Sao_Paulo';
+const hourEl=document.getElementById('hora'),dateEl=document.getElementById('data'),greetingEl=document.getElementById('saudacao');
+function update(){
+ const now=new Date();
+ const hour=Number(new Intl.DateTimeFormat('en-US',{timeZone:zone,hour:'numeric',hour12:false}).format(now));
+ greetingEl.textContent=(hour<12?'Bom dia':hour<18?'Boa tarde':'Boa noite')+', Madu!';
+ hourEl.textContent=new Intl.DateTimeFormat('pt-BR',{timeZone:zone,hour:'2-digit',minute:'2-digit',hour12:false}).format(now);
+ dateEl.textContent=new Intl.DateTimeFormat('pt-BR',{timeZone:zone,weekday:'long',day:'numeric',month:'long'}).format(now).toLocaleUpperCase('pt-BR');
+}
+update();setInterval(update,15000);
+const focus=document.getElementById('foco');
+try{const day=new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());const key='planner2027-foco-'+day;focus.value=localStorage.getItem(key)||'';focus.addEventListener('input',()=>{try{localStorage.setItem(key,focus.value)}catch(e){}})}catch(e){}
+})();
+</script>
+</body>
+</html>
