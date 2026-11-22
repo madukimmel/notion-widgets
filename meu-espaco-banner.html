@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Meu Espaço | Banner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eaf3eb;--border:#bed4c2;--green:#427b58;--ink:#263b2e;--muted:#75867b}
+*{box-sizing:border-box}html,body{margin:0;background:transparent;font-family:'DM Sans',Arial,sans-serif;color:var(--ink)}
+.banner{position:relative;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;gap:36px;min-height:173px;padding:26px clamp(32px,7vw,115px);background:var(--bg);border:1px solid var(--border);border-radius:23px}
+.section{position:relative;z-index:1;align-self:center}.left{border-right:1px solid var(--border);padding-right:26px}.right{padding-left:10px}.eyebrow{font-weight:700;font-size:10px;letter-spacing:4px;color:var(--green);text-transform:uppercase}.headline{font-family:'Playfair Display',Georgia,serif;font-style:italic;font-size:clamp(24px,2.7vw,39px);font-weight:400;color:var(--green);line-height:1.18;margin:8px 0}.date{font-size:13px;color:var(--muted);margin-bottom:12px}.quote{font-family:'Playfair Display',Georgia,serif;font-size:15px;font-style:italic}.feature{font:400 clamp(20px,2.25vw,30px)/1.18 'Playfair Display',Georgia,serif;margin:8px 0}.feature em{color:var(--green)}.sub{color:var(--muted);font-size:13px}.branch{position:absolute;pointer-events:none;opacity:.67}.branch svg{display:block;width:110px}.branch.rightbranch{top:-12px;right:8px;transform:rotate(-22deg)}.branch.leftbranch{bottom:-35px;left:-22px;transform:rotate(180deg)}
+@media(max-width:650px){.banner{grid-template-columns:1fr;gap:15px;padding:24px 30px}.left{border-right:0;border-bottom:1px solid var(--border);padding:0 0 15px}.right{padding-left:0}.rightbranch{opacity:.28}}
+</style></head>
+<body>
+<main class="banner" aria-label="Boas-vindas ao Meu Espaço">
+  <div class="branch leftbranch" aria-hidden="true"><svg viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg"><path d="M5 150Q50 76 55 2" fill="none" stroke="#6ba27f" stroke-width="2"/><g fill="#80b58f"><ellipse cx="28" cy="110" rx="7" ry="18" transform="rotate(-48 28 110)"/><ellipse cx="65" cy="96" rx="8" ry="17" transform="rotate(45 65 96)"/><ellipse cx="42" cy="63" rx="7" ry="16" transform="rotate(-40 42 63)"/><ellipse cx="69" cy="39" rx="7" ry="16" transform="rotate(42 69 39)"/></g></svg></div>
+  <div class="section left"><div class="eyebrow" id="greeting">BOM DIA</div><h1 class="headline" id="headline">Bem-vindo ao seu espaço.</h1><div class="date" id="date">Carregando data...</div><div class="quote" id="quote">Um passo de cada vez.</div></div>
+  <div class="section right"><div class="eyebrow">QUANDO VOCÊ ESTIVER PRONTO</div><p class="feature">Sua vida, seus projetos e suas metas em <em>um só lugar.</em></p><div class="sub" id="countdown">Carregando contagem regressiva...</div></div>
+  <div class="branch rightbranch" aria-hidden="true"><svg viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg"><path d="M5 150Q50 76 55 2" fill="none" stroke="#528665" stroke-width="2"/><g fill="#80b58f"><ellipse cx="28" cy="110" rx="7" ry="18" transform="rotate(-48 28 110)"/><ellipse cx="65" cy="96" rx="8" ry="17" transform="rotate(45 65 96)"/><ellipse cx="42" cy="63" rx="7" ry="16" transform="rotate(-40 42 63)"/><ellipse cx="69" cy="39" rx="7" ry="16" transform="rotate(42 69 39)"/></g></svg></div>
+</main>
+<script>
+const timezone='America/Sao_Paulo';
+function update(){
+ const now=new Date(); const hour=Number(new Intl.DateTimeFormat('en-US',{timeZone:timezone,hour:'numeric',hourCycle:'h23'}).format(now));
+ document.getElementById('greeting').textContent=hour<12?'BOM DIA':hour<18?'BOA TARDE':'BOA NOITE';
+ document.getElementById('headline').textContent=hour<12?'Bom dia! Um novo começo.':hour<18?'Bem-vindo ao seu espaço.':'Boa noite! Você fez seu melhor.';
+ const day=new Intl.DateTimeFormat('pt-BR',{timeZone:timezone,weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(now);
+ const time=new Intl.DateTimeFormat('pt-BR',{timeZone:timezone,hour:'2-digit',minute:'2-digit'}).format(now);
+ document.getElementById('date').textContent=day.charAt(0).toUpperCase()+day.slice(1)+' · '+time;
+ const year=Number(new Intl.DateTimeFormat('en-US',{timeZone:timezone,year:'numeric'}).format(now));
+ const parts=new Intl.DateTimeFormat('en-US',{timeZone:timezone,year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(now);
+ const y=Number(parts.find(p=>p.type==='year').value),m=Number(parts.find(p=>p.type==='month').value),d=Number(parts.find(p=>p.type==='day').value);
+ const days=Math.round((Date.UTC(year+1,0,1)-Date.UTC(y,m-1,d))/86400000);
+ document.getElementById('countdown').textContent=days+' dias para '+(year+1)+' · Seu próximo capítulo começa agora.';
+}
+update();setInterval(update,30000);
+</script></body></html>
